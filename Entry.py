@@ -1,37 +1,56 @@
-from Tipo import Tipo
 import re
-import util
+from LectorTitulo import LectorTitulo
+from util import leer_titulo
+
+
+def leer_titulo(url):
+    titulo = LectorTitulo(url).leer_titulo()
+    return titulo
 
 
 class Entry:
 
     def __init__(self, fila):
         self.fila = fila
+        self.handle = None
         self.id = fila.id
-        self.patron = []
-        self.regex_link = util.regex_link()
-        self.regex_url = re.compile("^https?:\\/\\/(.*)$")
+        self.regex_link = re.compile('\\[(.*)\\]\\((.*\\))')
+        self.regex_url = re.compile("(https?:\\/\\/.*)")
         self.texto = None
-        self.tipo = None
-        self.titulo = None
+        self.titulo = fila.titulo
+        self.crear_handle()
         self.analizar()
 
     def analizar(self):
+        self.texto = ""
         arr = re.split("\n", self.fila.texto)
-        self.tipo = Tipo.LINK
-        self.patron = []
         for (linea) in arr:
-            if linea.strip() != "":
-                if self.regex_link.match(linea):
-                    self.patron.append("l")
-                    self.set_tipo_link()
-                elif self.regex_url.match(linea):
-                    self.patron.append("u")
-                    self.set_tipo_link()
-                else:
-                    self.patron.append("o")
-                    self.tipo = Tipo.MIXTO
+            self.texto += self.mejorar_links(linea)
 
-    def set_tipo_link(self):
-        if self.tipo != Tipo.MIXTO or self.tipo is None:
-            self.tipo = Tipo.LINK
+    def crear_handle(self):
+        tmp_handle = self.titulo.lower().replace(" ", "-")
+        self.handle = re.sub('[^0-9a-zA-Z\\-]+', '', tmp_handle)
+
+    def mejorar_links(self, linea):
+        if linea.strip() == "":
+            return "\n"
+        match = self.regex_link.match(linea)
+        if match is not None:
+            match_url = self.regex_url.match(match.group(1))
+            if match_url is not None:
+                titulo = leer_titulo(match.group(1))
+                p1 = linea.find(match.group(1))
+                parte1 = linea[:p1]
+                p2 = len(linea) - (linea.find(match.group(1)) + len(match.group(1)))
+                parte2 = linea[-p2:]
+                mi_linea = parte1 + titulo + parte2
+            else:
+                mi_linea = linea
+        else:
+            match = self.regex_url.match(linea)
+            if match is not None:
+                titulo = leer_titulo(match.group(1))
+                mi_linea = "[{}]({})".format(titulo, match.group(1))
+            else:
+                mi_linea = linea
+        return mi_linea + "\n"
