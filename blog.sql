@@ -209,16 +209,31 @@ DROP TABLE IF EXISTS `entry`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `entry` (
+  `identry` int(11) NOT NULL AUTO_INCREMENT,
   `handle` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `descripcion` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `titulo` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tipo` int(11) DEFAULT NULL,
+  `descripcion` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `creado` datetime DEFAULT NULL,
   `cambiado` datetime DEFAULT NULL,
-  `identry` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`identry`),
   UNIQUE KEY `u_handle` (`handle`)
 ) ENGINE=InnoDB AUTO_INCREMENT=411 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `foto`
+--
+
+DROP TABLE IF EXISTS `foto`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `foto` (
+  `idfoto` int(11) NOT NULL,
+  `handle` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `directorio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `archivo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`idfoto`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -230,11 +245,28 @@ DROP TABLE IF EXISTS `tag`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tag` (
   `idtag` int(11) NOT NULL,
-  `tag` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `identry` int(11) DEFAULT NULL,
+  `tag` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`idtag`,`tag`),
   KEY `fk_entry_identry` (`identry`),
   CONSTRAINT `fk_entry_identry` FOREIGN KEY (`identry`) REFERENCES `entry` (`identry`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tagfoto`
+--
+
+DROP TABLE IF EXISTS `tagfoto`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tagfoto` (
+  `idtagfoto` int(11) NOT NULL,
+  `idfoto` int(11) NOT NULL,
+  `tag` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`idtagfoto`),
+  KEY `fk_tagfoto_foto1_idx` (`idfoto`),
+  CONSTRAINT `fk_tagfoto_foto1` FOREIGN KEY (`idfoto`) REFERENCES `foto` (`idfoto`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -247,4 +279,4 @@ CREATE TABLE `tag` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-05-16 22:14:52
+-- Dump completed on 2019-05-20  0:03:39

@@ -17,3 +17,8 @@ class BD(object):
 
     def cursor(self, buffered=None, named_tuple=None):
         return self.cnx.cursor(buffered=buffered, named_tuple=named_tuple)
+
+
+class BDMySql(BD):
+
+    def __init__(self, esquema, usuario, password):
