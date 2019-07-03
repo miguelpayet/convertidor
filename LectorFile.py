@@ -1,4 +1,5 @@
 from util import leer_titulo
+from tag import leer_tags
 
 
 class LectorFile:
@@ -11,4 +12,8 @@ class LectorFile:
             filas = f.readlines()
         for fila in filas:
             if fila.strip() != "":
-                print(fila + " " + leer_titulo(fila))
+                titulo = leer_titulo(fila)
+                print('---')
+                print(fila)
+                print(titulo)
+                print(leer_tags((fila, titulo,)))

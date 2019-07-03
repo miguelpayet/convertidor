@@ -1,22 +1,35 @@
 from BD import BD
 
 
-class Blog:
+class Grabador:
 
-    def __init__(self, entry):
+    def __init__(self):
         self.bd_destino = BD('blog', 'blog', 'blog')
-        self.entry = entry
-        self.sql_insert = "insert into entry (identry, handle, descripcion, titulo, creado, cambiado) " \
-                          "values (%s, %s, %s, %s, %s, %s)"
+        self.sql_insert_entry = "insert into entry (identry, handle, descripcion, titulo, creado, cambiado) " \
+                                "values (%s, %s, %s, %s, %s, %s)"
+        self.sql_insert_tag = 'insert into tag (identry, tag) values (%s, %s, %s)'
 
-    def ejecutar(self, entry_id, handle, descripcion="", titulo="", creado=None, cambiado=None):
+    def ejecutar(self, entry_id, handle, descripcion="", titulo="", creado=None, cambiado=None, tags=None):
         cursor = self.bd_destino.cursor()
         try:
-            cursor.execute(self.sql_insert, (entry_id, handle, descripcion, titulo, creado, cambiado))
+            cursor.execute(self.sql_insert_entry, (entry_id, handle, descripcion, titulo, creado, cambiado))
             self.bd_destino.commit()
+            for tag in tags:
+                try:
+                    cursor_tag = self.bd_destino.cursor()
+                    cursor.execute(self.sql_insert_tag, (entry_id, tag))
+                except Exception as variable:
+                    print('tag: %s' % variable)
         except Exception as variable:
-            print(variable)
+            print('entry: %s' % variable)
+
+
+class Blog(Grabador):
+
+    def __init__(self, entry):
+        super().__init__()
+        self.entry = entry
 
     def grabar(self):
         self.ejecutar(self.entry.fila.id, self.entry.handle, self.entry.texto, self.entry.titulo,
-                      self.entry.fila.creation_date, self.entry.fila.modification_date)
+                      self.entry.fila.creation_date, self.entry.fila.modification_date, self.tags)

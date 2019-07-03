@@ -4,16 +4,26 @@ from util import leer_titulo
 from util import re_match_url
 
 
+class EntryAbstract:
+
+    def __init__(self):
+        self.handle = None
+        self.crear_handle()
+
+    def crear_handle(self):
+        tmp_handle = self.titulo.lower().replace(" ", "-")
+        self.handle = re.sub('[^0-9a-zA-Z\\-]+', '', tmp_handle)
+
+
 class Entry:
 
     def __init__(self, fila):
+        self.texto = None
         self.fila = fila
-        self.handle = None
         self.id = fila.id
         self.regex_link = re.compile('\\[(.*)\\]\\((.*\\))')
-        self.texto = None
         self.titulo = fila.titulo
-        self.crear_handle()
+        super().__init__()
         self.analizar()
 
     def analizar(self):
@@ -21,10 +31,6 @@ class Entry:
         arr = re.split("\n", self.fila.texto)
         for (linea) in arr:
             self.texto += self.mejorar_links(linea)
-
-    def crear_handle(self):
-        tmp_handle = self.titulo.lower().replace(" ", "-")
-        self.handle = re.sub('[^0-9a-zA-Z\\-]+', '', tmp_handle)
 
     def mejorar_links(self, linea):
         if linea.strip() == "":
@@ -49,3 +55,13 @@ class Entry:
             else:
                 mi_linea = linea
         return mi_linea + "\n"
+
+
+class EntryFile(EntryAbstract):
+
+    def __init__(self, url):
+        self.texto = None
+        self.fila = url
+        self.id = None
+        self.titulo = leer_titulo(self.fila)
+        super().__init__()

@@ -27,20 +27,21 @@ class LectorTitulo:
         self.session = Session()
 
     def leer_titulo(self):
-        titulo = self.url
+        links = ('h1', 'h2',)
+        titulo = self.url.rstrip()
         try:
             r = self.session.get(self.url)
             if r.status_code == 200:
-                soup = BeautifulSoup(r.content, "lxml")
-                html_h1 = soup('h1')
-                if html_h1:
+                r.raise_for_status()
+            soup = BeautifulSoup(r.content, "lxml")
+            for link in links:
+                html_link = soup(link)
+                if html_link:
                     try:
-                        if html_h1[0]['id'] == "unavailable-message":
-                            titulo = remove_control_characters(html_h1[1].contents[1].contents[0])
+                        if html_link[0]['id'] == "unavailable-message":
+                            titulo = remove_control_characters(html_link[1].contents[1].contents[0])
                     except KeyError as ex:
-                        titulo = remove_control_characters(html_h1[0].text)
-                print(titulo)
+                        titulo = remove_control_characters(html_link[0].text)
         except Exception as ex:
-            print(ex)
             titulo = ex.__str__()
         return titulo
