@@ -33,3 +33,13 @@ class Blog(Grabador):
     def grabar(self):
         self.ejecutar(self.entry.fila.id, self.entry.handle, self.entry.texto, self.entry.titulo,
                       self.entry.fila.creation_date, self.entry.fila.modification_date, self.tags)
+
+
+class File(Grabador):
+
+    def __init__(self, entry):
+        super().__init__()
+        self.entry = entry
+
+    def grabar(self):
+        self.ejecutar(None, self.entry.handle, self.entry.texto, self.entry.titulo, None, None, self.tags)

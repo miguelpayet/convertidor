@@ -1,5 +1,7 @@
 from util import leer_titulo
 from tag import leer_tags
+from Entry import EntryFile
+import Grabador
 
 
 class LectorFile:
@@ -12,8 +14,6 @@ class LectorFile:
             filas = f.readlines()
         for fila in filas:
             if fila.strip() != "":
-                titulo = leer_titulo(fila)
-                print('---')
-                print(fila)
-                print(titulo)
-                print(leer_tags((fila, titulo,)))
+                entry = EntryFile(fila)
+                grabador = Grabador.Blog(entry)
+                grabador.grabar()
