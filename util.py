@@ -1,3 +1,5 @@
+import re
+
 from LectorTitulo import LectorTitulo
 
 
@@ -8,3 +10,8 @@ def leer_titulo(url):
     else:
         titulo = ""
     return titulo
+
+
+def re_match_url(fila):
+    regex_url = re.compile("(https?:\\/\\/.*)")
+    return regex_url.match(fila)

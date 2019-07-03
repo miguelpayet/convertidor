@@ -1,11 +1,7 @@
 import re
-from LectorTitulo import LectorTitulo
+
 from util import leer_titulo
-
-
-def leer_titulo(url):
-    titulo = LectorTitulo(url).leer_titulo()
-    return titulo
+from util import re_match_url
 
 
 class Entry:
@@ -15,7 +11,6 @@ class Entry:
         self.handle = None
         self.id = fila.id
         self.regex_link = re.compile('\\[(.*)\\]\\((.*\\))')
-        self.regex_url = re.compile("(https?:\\/\\/.*)")
         self.texto = None
         self.titulo = fila.titulo
         self.crear_handle()
@@ -36,8 +31,8 @@ class Entry:
             return "\n"
         match = self.regex_link.match(linea)
         if match is not None:
-            match_url = self.regex_url.match(match.group(1))
-            if match_url is not None:
+            match_url = re_match_url(match.group(1))
+            if match_url:
                 titulo = leer_titulo(match.group(1))
                 p1 = linea.find(match.group(1))
                 parte1 = linea[:p1]
@@ -47,10 +42,10 @@ class Entry:
             else:
                 mi_linea = linea
         else:
-            match = self.regex_url.match(linea)
-            if match is not None:
-                titulo = leer_titulo(match.group(1))
-                mi_linea = "[{}]({})".format(titulo, match.group(1))
+            match_url = re_match_url(linea)
+            if match_url is not None:
+                titulo = leer_titulo(match_url.group(1))
+                mi_linea = "[{}]({})".format(titulo, match_url.group(1))
             else:
                 mi_linea = linea
         return mi_linea + "\n"

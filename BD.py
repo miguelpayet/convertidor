@@ -4,7 +4,7 @@ import mysql.connector
 class BD(object):
 
     def __init__(self, esquema, usuario, password):
-        self.host = 'uuubuntu'
+        self.host = 'localhost'
         self.esquema = esquema
         self.password = password
         self.usuario = usuario
@@ -22,3 +22,4 @@ class BD(object):
 class BDMySql(BD):
 
     def __init__(self, esquema, usuario, password):
+        super().__init__(esquema, usuario, password)
