@@ -44,4 +44,5 @@ class File(Grabador):
         self.entry = entry
 
     def grabar(self):
-        self.ejecutar(0, self.entry.handle, self.entry.texto, self.entry.titulo, None, None, self.entry.tags)
+        self.ejecutar(0, self.entry.handle, self.entry.texto, self.entry.titulo, self.entry.creacion, None,
+                      self.entry.tags)

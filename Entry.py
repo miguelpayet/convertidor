@@ -3,6 +3,7 @@ import re
 from util import leer_titulo
 from tag import leer_tags
 from util import re_match_url
+from datetime import datetime
 
 
 def mejorar_links(linea):
@@ -66,5 +67,6 @@ class EntryFile(EntryAbstract):
         self.url = url
         self.titulo = leer_titulo(self.url)
         self.tags = leer_tags((self.url, self.titulo,))
-        self.texto = '[%s](%s))' % (self.url, self.titulo)
+        self.texto = '[%s](%s)' % (self.titulo, self.url)
+        self.creacion = datetime.now()
         super().__init__(self.titulo)

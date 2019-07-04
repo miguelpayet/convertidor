@@ -33,7 +33,7 @@ class LectorTitulo:
         try:
             r = self.session.get(self.url)
             if r.status_code == 200:
-                r.raise_for_status()
+                raise Exception(r.status_code)
             soup = BeautifulSoup(r.content, "lxml")
             for link in links:
                 html_link = soup(link)
@@ -45,5 +45,5 @@ class LectorTitulo:
                         titulo = remove_control_characters(html_link[0].text)
                     break
         except Exception as ex:
-            titulo = '%s - %s' % (self.url.rstrip, ex.__str__())
+            titulo = '%s %s' % (titulo, ex.__str__())
         return titulo
