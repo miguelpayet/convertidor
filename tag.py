@@ -3,6 +3,7 @@ tag_dict = {'odoo': ('odoo',),
             'django': ('django',),
             'docker': ('docker', 'containers',),
             'favicon': ('favicon',),
+            'isis': ('isis', 'java'),
             'jdbc': ('java', 'jdbc', 'oracle'),
             'jquery': ('jquery', 'javascript',),
             'key': ('key', 'public key',),
@@ -19,6 +20,8 @@ tag_dict = {'odoo': ('odoo',),
             'ssh': ('ssh',),
             'stackoverflow': ('stackoverflow',),
             'ubuntu': ('linux', 'ubuntu',),
+            'wicket': ('wicket', 'java'),
+            'youtube': ('youtube',),
             }
 
 

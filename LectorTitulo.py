@@ -1,6 +1,7 @@
-from requests import Session
-from bs4 import BeautifulSoup
 import unicodedata
+
+from bs4 import BeautifulSoup
+from requests import Session
 
 
 def remove_control_characters(s):
@@ -40,8 +41,9 @@ class LectorTitulo:
                     try:
                         if html_link[0]['id'] == "unavailable-message":
                             titulo = remove_control_characters(html_link[1].contents[1].contents[0])
-                    except KeyError as ex:
+                    except KeyError:
                         titulo = remove_control_characters(html_link[0].text)
+                    break
         except Exception as ex:
-            titulo = ex.__str__()
+            titulo = '%s - %s' % (self.url.rstrip, ex.__str__())
         return titulo

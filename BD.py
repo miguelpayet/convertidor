@@ -18,6 +18,9 @@ class BD(object):
     def cursor(self, buffered=None, named_tuple=None):
         return self.cnx.cursor(buffered=buffered, named_tuple=named_tuple)
 
+    def last_id(self):
+        return self.cnx.insert_id()
+
 
 class BDMySql(BD):
 

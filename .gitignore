@@ -1,5 +1,4 @@
-.idea
-.Python
+*.swp
 .cache
 .coverage
 .coverage.*
@@ -7,12 +6,14 @@
 .eggs/
 .env
 .hypothesis/
+.idea
 .installed.cfg
 .ipynb_checkpoints
 .mypy_cache/
 .nox/
 .pyre/
 .pytest_cache/
+.Python
 .python-version
 .ropeproject
 .scrapy
@@ -22,7 +23,7 @@
 .venv
 .webassets-cache
 /site
-ENV/
-MANIFEST
 __pycache__/
 build/
+ENV/
+MANIFEST

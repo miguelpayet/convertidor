@@ -43,14 +43,14 @@ class EntryAbstract:
         self.handle = re.sub('[^0-9a-zA-Z\\-]+', '', tmp_handle)
 
 
-class Entry:
+class Entry(EntryAbstract):
 
     def __init__(self, fila):
         self.texto = None
         self.fila = fila
         self.id = fila.id
         self.tags = leer_tags((self.fila.titulo, self.fila.texto))
-        super().__init__(fila.titulo)
+        super().__init__(self.fila.titulo)
         self.analizar()
 
     def analizar(self):
